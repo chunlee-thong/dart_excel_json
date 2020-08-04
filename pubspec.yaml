@@ -1,0 +1,5 @@
+name: dart_excel_json
+environment:
+  sdk: ">=2.6.0 <3.0.0"
+dependencies:
+  excel: ^1.1.4
