@@ -65,7 +65,7 @@ void generateDartClass() async {
     String key_data_type = key.runtimeType.toString();
     String key_value = checkKeyConflict(key);
     String key_field_name = key.replaceAll(RegExp(r'/-/g'), "_");
-    dartClass += "    static ${key_data_type} ${key_field_name} = " +
+    dartClass += "    static const ${key_data_type} ${key_field_name} = " +
         '"${key_value}";\n';
   }
 
@@ -84,7 +84,7 @@ String checkKeyConflict(String key) {
 
 List<String> dart_key_word = [
   "abstract ",
-  "	else",
+  "else",
   "import",
   "super",
   "as",
