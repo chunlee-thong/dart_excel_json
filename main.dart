@@ -4,11 +4,13 @@ import 'package:excel/excel.dart';
 import 'dart:convert';
 
 String one_language_name;
+final String json_path = "";
+final String locale_key_class_path = "";
 void main(List<String> args) async {
   final file = "./translation_example.xlsx";
   final bytes = File(file).readAsBytesSync();
   final excel = Excel.decodeBytes(bytes);
-  final sheetName = "Sheet1";
+  final sheetName = "Translation";
   final sheet = excel.tables[sheetName];
 
   //method
@@ -38,8 +40,10 @@ Future<void> generateJSONFile(Sheet sheet) async {
           ))
           .value
           .toString();
+      key = key.replaceAll(" ", "-");
       data[key] = value;
     }
+    //get language name
     String language_name = sheet
         .cell(CellIndex.indexByColumnRow(
           columnIndex: lang,
@@ -50,13 +54,13 @@ Future<void> generateJSONFile(Sheet sheet) async {
     one_language_name = language_name;
     data.keys.toList()..sort();
     String json_data = json.encode(data);
-    final language_file = File("./generated_file/${language_name}.json");
+    final language_file = File("$json_path/${language_name}.json");
     await language_file.writeAsString(json_data);
   }
 }
 
 void generateDartClass() async {
-  File json_file = File("./generated_file/${one_language_name}.json");
+  File json_file = File("$json_path/${one_language_name}.json");
   String json_data = await json_file.readAsString();
   Map<String, dynamic> map_data = json.decode(json_data);
   String dartClass = "class LocaleKeys {\n";
@@ -64,14 +68,13 @@ void generateDartClass() async {
   for (var key in map_data.keys.toList()) {
     String key_data_type = key.runtimeType.toString();
     String key_value = checkKeyConflict(key);
-    String key_field_name = key.replaceAll(RegExp(r'/-/g'), "_");
-    dartClass += "    static const ${key_data_type} ${key_field_name} = " +
-        '"${key_value}";\n';
+    String key_field_name = key_value.replaceAll("-", "_");
+    dartClass += "    static const ${key_data_type} ${key_field_name} = " + '"${key}";\n';
   }
 
   dartClass += "}";
 
-  File dartClassFile = File("./generated_file/locale_keys.dart");
+  File dartClassFile = File("$locale_key_class_path/locale_keys.dart");
   dartClassFile.writeAsString(dartClass);
 }
 
