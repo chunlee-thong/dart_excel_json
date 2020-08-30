@@ -4,8 +4,8 @@ import 'package:excel/excel.dart';
 import 'dart:convert';
 
 String one_language_name;
-final String json_path = "";
-final String locale_key_class_path = "";
+final String json_path = "./generated";
+final String locale_key_class_path = "./generated";
 void main(List<String> args) async {
   final file = "./translation_example.xlsx";
   final bytes = File(file).readAsBytesSync();
@@ -69,7 +69,8 @@ void generateDartClass() async {
     String key_data_type = key.runtimeType.toString();
     String key_value = checkKeyConflict(key);
     String key_field_name = key_value.replaceAll("-", "_");
-    dartClass += "    static const ${key_data_type} ${key_field_name} = " + '"${key}";\n';
+    dartClass += "    static const ${key_data_type} ${key_field_name} = " +
+        '"${key}";\n';
   }
 
   dartClass += "}";
