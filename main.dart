@@ -7,13 +7,13 @@ import 'package:excel/excel.dart';
 String one_language_name;
 
 //Required
-final String saved_json_path = "";
+final String saved_json_path = "generated_file";
 
 //Required
-final String saved_locale_key_class_path = "";
+final String saved_locale_key_class_path = "generated_file";
 
 //Required
-final String excel_file_path = "";
+final String excel_file_path = "translation_example.xlsx";
 
 void main(List<String> args) async {
   final bytes = File(excel_file_path).readAsBytesSync();
